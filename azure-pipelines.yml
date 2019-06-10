@@ -1,0 +1,13 @@
+trigger:
+- master
+
+variables:
+  imageName: 'testimage:$(build.buildId)'
+
+steps:
+- task: Docker@2
+  inputs:
+    containerRegistry: 'fjdwinfraregistry-connection'
+    repository: 'test/docker'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
