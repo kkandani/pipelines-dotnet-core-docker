@@ -1,13 +1,8 @@
 trigger:
 - master
 
-variables:
-  imageName: 'testimage:$(build.buildId)'
-
 steps:
-- task: Docker@2
-  inputs:
-    containerRegistry: 'fjdwinfraregistry-connection'
-    repository: 'test/docker'
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
+- script: |
+    docker-compose -f docs/docker-compose.yml --project-directory . -p docs up -d
+    docker wait docs_sut_1
+    docker-compose -f docs/docker-compose.yml --project-directory . down
